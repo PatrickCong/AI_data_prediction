@@ -1,0 +1,169 @@
+#
+#   ADVENTURE TIME!
+#
+#       a   b   c   d   e
+#     +---+---+---+---+---+
+#   1 |       /   | S   t | 1
+#     +   +---+   +   +---+
+#   2 | Z |       /   / w | 2
+#     +-*-+---+-%-+   +-*-+
+#   3 |     D | w | w | ~ | 3
+#     +---+   +   +-%-+ ~ |
+#   4 | k |     F | ~   ~ | 4
+#     +   +   +---+-/-+---+
+#   5 | t       H   G / x | 5
+#     +---+---+---+---+---+
+#       a   b   c   d   e
+# Terrain:
+#   + | -    : wall
+#     *      : low wall
+#     %      : weak wall
+#     /      : door
+#     ~      : water
+#
+# Monsters:
+#     D at b3: Dragon (Guards key to door 5)
+#     G at d5: Guard
+#     F at c4: Evil fairy
+#     H at c5: Hound
+#     Z at a2: Zombie
+#     S at b1: Skeleton
+#
+# Objects:
+#     t at e1: Tome of fire (teaches fire spells)
+#     w at e2: Sword
+#     w at c3: Bow
+#     w at c3: Stick
+#     k at a4: Key to door 3
+#     t at a5: Tome if ice (teaches ice spells)
+#
+
+# skills
+
+lockpick_skill_medium <-- lockpick_skill_high
+lockpick_skill_low <-- lockpick_skill_medium
+melee_skill_medium <-- melee_skill_high
+melee_skill_low <-- melee_skill_medium
+magic_skill_medium <-- magic_skill_high
+magic_skill_low <-- magic_skill_medium
+
+# abilities
+
+has_magic_attack <-- can_cast_fire
+has_magic_attack <-- can_cast_ice
+has_magic_attack <-- can_cast_lightning
+has_ranged_attack <-- has_a_bow
+has_ranged_attack <-- has_magic_attack
+can_open_door_1 <-- has_key_1
+can_open_door_1 <-- has_lockpick & lockpick_skill_low
+can_open_door_2 <-- has_key_2
+can_open_door_2 <-- has_lockpick & lockpick_skill_low
+can_open_door_3 <-- has_key_3
+can_open_door_3 <-- has_lockpick & lockpick_skill_medium
+can_open_door_4 <-- has_key_4
+can_open_door_4 <-- has_lockpick & lockpick_skill_medium
+can_open_door_5 <-- has_key_5
+can_open_door_5 <-- has_lockpick & lockpick_skill_high
+has_a_weak_melee_weapon <-- has_a_stick
+has_a_weak_melee_weapon <-- has_a_pickaxe
+has_a_strong_melee_weapon <-- has_a_sword
+has_weak_melee_attack <-- has_a_strong_melee_weapon & melee_skill_low
+has_weak_melee_attack <-- has_a_weak_melee_weapon & melee_skill_medium
+has_weak_melee_attack <-- has_medium_melee_attack
+has_medium_melee_attack <-- has_a_strong_melee_weapon & melee_skill_medium
+has_medium_melee_attack <-- has_a_weak_melee_weapon & melee_skill_high
+has_medium_melee_attack <-- has_strong_melee_attack
+has_strong_melee_attack <-- has_a_strong_melee_weapon & melee_skill_high
+can_climb_low_wall <-- has_a_rope
+can_climb_low_wall <-- agile
+can_destroy_weak_wall <-- has_a_pickaxe
+can_destroy_weak_wall <-- has_a_bomb
+has_fire_source <-- has_a_torch
+has_fire_source <-- can_cast_fire
+has_fire_source <-- has_matches
+has_a_torch <-- has_a_stick & has_fire_source
+has_a_bomb <-- has_gunpowder & has_fire_source
+
+# monsters
+
+can_defeat_dragon <-- has_strong_melee_attack
+can_defeat_dragon <-- can_cast_fire & has_a_bow & has_a_bomb
+can_defeat_guard <-- has_medium_melee_attack
+can_defeat_guard <-- has_magic_attack & magic_skill_high
+can_defeat_evil_fairy <-- has_magic_attack & magic_skill_medium
+can_defeat_hound <-- has_medium_melee_attack
+can_defeat_hound <-- can_cast_fire & magic_skill_medium
+can_defeat_zombie <-- has_weak_melee_attack
+can_defeat_zombie <-- can_cast_fire & magic_skill_low
+can_defeat_skeleton <-- has_medium_melee_attack
+can_defeat_skeleton <-- has_weak_melee_attack & can_cast_ice & magic_skill_low
+
+# map
+a1 <-- b1
+a1 <-- a2
+b1 <-- a1
+b1 <-- c1 & can_open_door_1
+c1 <-- b1 & can_open_door_1
+c1 <-- c2
+d1 <-- d2 & can_defeat_skeleton
+d1 <-- e1 & can_defeat_skeleton
+e1 <-- d1
+can_cast_fire <-- e1
+
+a2 <-- a1 & can_defeat_zombie
+b2 <-- c2
+c2 <-- c1
+c2 <-- b2
+c2 <-- d2 & can_open_door_2
+c2 <-- c3 & can_destroy_weak_wall
+d2 <-- d1
+d2 <-- c2 & can_open_door_2
+d2 <-- e2 & can_open_door_3
+d2 <-- d3
+e2 <-- d2 & can_open_door_3
+has_a_sword <-- e2
+
+a3 <-- a2 & can_climb_low_wall
+a3 <-- b3
+b3 <-- a3 & can_defeat_dragon
+b3 <-- b4 & can_defeat_dragon
+has_key_5 <-- b3
+c3 <-- c2 & can_destroy_weak_wall
+c3 <-- c4
+has_a_bow <-- c3
+d3 <-- d2
+d3 <-- d4 & can_destroy_weak_wall
+has_a_stick <-- d3
+e3 <-- e3 & can_climb_low_wall & can_swim
+e3 <-- e4 & can_swim
+
+a4 <-- a5
+key_to_door_3 <-- a4
+b4 <-- b3
+b4 <-- c4
+b4 <-- b5
+c4 <-- b4 & can_destroy_evil_fairy
+c4 <-- c3 & can_destroy_evil_fairy
+d4 <-- d3 & can_destroy_weak_wall & can_swim
+d4 <-- e4 & can_swim
+d4 <-- d5 & can_swim & can_open_door_4
+e4 <-- e3 & can_swim
+e4 <-- d4 & can_swim
+
+a5 <-- a4
+a5 <-- b5
+can_cast_fire <-- a5
+b5 <-- a5
+b5 <-- b4
+b5 <-- c5
+c5 <-- b5 & can_defeat_hound
+c5 <-- d5 & can_defeat_hound
+d5 <-- c5 & can_defeat_guard
+d5 <-- d4 & can_open_door_4
+d5 <-- e5 & can_open_door_5
+e5 <-- d5 & can_open_door_5
+treasure_found <-- e5
+
+# Victory
+victory <-- treasure_found
+

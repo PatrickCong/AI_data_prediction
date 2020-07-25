@@ -1,0 +1,3 @@
+snowing <-- cloudy & below_zero & white_stuff_falling & 1
+cloudy <-- no_sun & daytime
+below_zero <-- very_cold

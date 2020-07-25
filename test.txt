@@ -1,0 +1,17 @@
+load adventure.txt
+tell a1
+tell has_a_sword has_a_rope
+tell melee_skill_high
+tell has_gunpowder
+infer_all
+is_true victory
+
+clear_atoms
+
+tell a1
+tell agile can_swim
+tell has_a_pickaxe
+tell melee_skill_medium
+tell lockpick_skill_high has_lockpick
+infer_all
+is_true victory
